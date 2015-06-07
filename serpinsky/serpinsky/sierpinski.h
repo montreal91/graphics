@@ -4,6 +4,7 @@
 
 #include <string>
 #include <stdlib.h>
+#include <iostream>
 #include <time.h>
 
 #include "GL/freeglut.h"
@@ -35,8 +36,8 @@ public:
     }
 
     void SetUpCallback();
-    void Init();
-    void Draw();
+    void Init() const;
+    void Draw() const;
 
 private:
     const std::string TITLE = "Sierpinski Gasket";
@@ -44,14 +45,14 @@ private:
     ColorRGBA FILL_COLOR, POINT_COLOR;
     Point2 LEFT, RIGHT, TOP;
     const int POINT_SIZE    = 1;
+    const int ITERATIONS    = 50000;
 
-//    void Init();
-    void CreateWindow( int argc, char** argv );
-    void DrawBasicTriangle();
-    void DrawGasket();
+    void CreateWindow( int argc, char** argv ) const;
+    void DrawBasicTriangle() const;
+    void DrawGasket() const;
 
-    Point2 GetMiddle( Point2& start, Point2& finish );
-    Point2 GetRandomVertex();
+    Point2 GetMiddle( const Point2& start, const Point2& finish ) const;
+    Point2 GetRandomVertex() const;
 };
 
 #endif

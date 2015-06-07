@@ -2,11 +2,10 @@
 
 Sierpinski* Sierpinski::current_instance;
 
-Sierpinski::Sierpinski(){
+Sierpinski::Sierpinski() {
 }
 
-Sierpinski::Sierpinski( int argc, char** argv ){
-
+Sierpinski::Sierpinski( int argc, char** argv ) {
     this->SIZE.width        = 800;
     this->SIZE.height       = 600;
 
@@ -32,17 +31,17 @@ Sierpinski::Sierpinski( int argc, char** argv ){
     this->CreateWindow( argc, argv );
 }
 
-Sierpinski::~Sierpinski(){
+Sierpinski::~Sierpinski() {
 }
 
 void
-Sierpinski::SetUpCallback(){
+Sierpinski::SetUpCallback() {
     current_instance = this;
     ::glutDisplayFunc( Sierpinski::DrawCallback );
 }
 
 void
-Sierpinski::Init(){
+Sierpinski::Init() const {
     glClearColor(
         this->FILL_COLOR.red,
         this->FILL_COLOR.green,
@@ -60,7 +59,7 @@ Sierpinski::Init(){
 }
 
 void
-Sierpinski::Draw(){
+Sierpinski::Draw() const {
     glClear( GL_COLOR_BUFFER_BIT );
     glBegin( GL_POINTS );
 
@@ -72,7 +71,7 @@ Sierpinski::Draw(){
 }
 
 void
-Sierpinski::CreateWindow( int argc, char** argv ){
+Sierpinski::CreateWindow( int argc, char** argv ) const {
     glutInit( &argc, argv );
     glutInitDisplayMode( GLUT_SINGLE | GLUT_RGB );
     glutInitWindowSize( this->SIZE.width, this->SIZE.height );
@@ -81,19 +80,19 @@ Sierpinski::CreateWindow( int argc, char** argv ){
 }
 
 void
-Sierpinski::DrawBasicTriangle(){
+Sierpinski::DrawBasicTriangle() const {
     glVertex2f( this->LEFT.coord_x, this->LEFT.coord_y );
     glVertex2f( this->RIGHT.coord_x, this->RIGHT.coord_y );
     glVertex2f( this->TOP.coord_x, this->TOP.coord_y );
 }
 
 void
-Sierpinski::DrawGasket(){
+Sierpinski::DrawGasket() const {
     Point2 current_point = this->LEFT;
 
-    for( int i = 0; i < 500000; i++ ){
+    for( int i = 0; i < this->ITERATIONS; i++ ){
         Point2 vertex   = this->GetRandomVertex();
-        vertex          = this->GetMiddle( current_point, vertex );
+        vertex          = this->GetMiddle( vertex, current_point );
         glVertex2f( vertex.coord_x, vertex.coord_y );
         current_point   = vertex;
     }
@@ -101,7 +100,7 @@ Sierpinski::DrawGasket(){
 
 
 Point2
-Sierpinski::GetMiddle( Point2& start, Point2& finish ){
+Sierpinski::GetMiddle( const Point2& start, const Point2& finish ) const {
     float coord_x   = ( start.coord_x + finish.coord_x ) / 2;
     float coord_y   = ( start.coord_y + finish.coord_y ) / 2;
     Point2 middle;
@@ -111,15 +110,15 @@ Sierpinski::GetMiddle( Point2& start, Point2& finish ){
 }
 
 Point2
-Sierpinski::GetRandomVertex(){
+Sierpinski::GetRandomVertex() const {
     int toss = rand() % 3;
-    if ( toss == 0 ){
+    if ( toss == 0 ) {
         return this->LEFT;
-    } else if ( toss == 1 ){
+    } else if ( toss == 1 ) {
         return this->RIGHT;
-    } else if ( toss == 2 ){
+    } else if ( toss == 2 ) {
         return this->TOP;
     } else {
-        return;
+        throw -1;
     }
 }
